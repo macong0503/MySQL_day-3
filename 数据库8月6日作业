@@ -1,0 +1,34 @@
+-- 需求一：查出 男性有多少人，女性有多少人。
+SELECT sex,COUNT(sex) FROM stu
+GROUP BY sex
+-- 需求二：至少拥有2个人的性别。至少拥有两个人的班级。
+-- 性别
+SELECT sex FROM stu
+WHERE sex in
+(SELECT sex FROM stu
+GROUP BY sex
+HAVING COUNT(stu.sex)>=2)
+-- 班级
+SELECT clazz_id FROM stu
+WHERE clazz_id in
+(SELECT clazz_id
+FROM stu 
+GROUP BY clazz_id  
+HAVING COUNT(stu.clazz_id)>=2)
+-- 需求三：计算出  每种性别的最大年龄。
+SELECT sex ,MAX(age) FROM stu
+GROUP BY sex
+HAVING MAX(stu.age)
+-- 需求四：不含学生的班级。
+SELECT * FROM clazz 
+where clazz.id not in(SELECT clazz_id FROM stu)
+-- 需求五：有哪些性别。
+SELECT sex FROM stu
+GROUP BY sex
+-- 需求六：查出男性中年龄大于10的有多少人
+SELECT COUNT(*) FROM stu
+WHERE sex='男' AND age>10
+-- 扩充：查出男性中各各班级年龄大于10的有多少人。
+SELECT clazz_id,COUNT(*) FROM stu
+WHERE sex='男' AND age>10
+GROUP BY clazz_id
