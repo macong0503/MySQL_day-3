@@ -1,0 +1,51 @@
+先统计每个班级多少人在打印出没有人的班级
+SELECT clazz.id , clazz.name , COUNT(stu.`name` )-- stu.id,stu.name
+FROM
+clazz
+LEFT JOIN stu
+ON stu.clazz_id=clazz.id
+GROUP BY clazz.`name`
+HAVING COUNT(stu.`name`)=0
+搜索没有人的班级
+SELECT * FROM clazz WHERE id NOT in (SELECT clazz_id FROM stu)
+查询性别
+SELECT id,name,
+(
+CASE sex
+when '1' THEN '男'
+when '0' THEN '女'
+when '5' THEN '中'
+ELSE '未知'
+END
+)
+sex
+FROM stu 
+通过别名查询
+SELECT id,name,age
+FROM
+(
+SELECT id,name,age,sex
+from stu
+WHERE sex ='1'
+)T
+WHERE T.age>20
+截断
+TRUNCATE book_copy
+把表合到一起
+INSERT INTO wife SELECT * FROM husband
+运用子查询
+SELECT * FROM stu
+WHERE name in
+(SELECT NAME
+FROM stu 
+GROUP BY name  
+HAVING COUNT(stu.name)<=2)
+随机查询
+SELECT * FROM stu
+ORDER BY RAND() LIMIT 0,2
+添加字段
+ALTER TABLE stu
+add  COLUMN `学历` VARCHAR(8)
+删除字段
+ALTER TABLE stu
+DROP COLUMN `学历`   
